@@ -6,7 +6,7 @@ namespace VoiceCastMasters_api.Model;
 public abstract class User
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public Guid ID { get; }
+    public long ID { get; }
     
     [Required]
     public string Name { get; set; }
@@ -18,11 +18,10 @@ public abstract class User
     public string Password { get; set; }
     [Required]
     public string Phone { get; set; }
-    [Required] 
-    public string ProfilePicture { get; set; } = "https://cdn.britannica.com/07/183407-050-C35648B5/Chicken.jpg";
+    public string ProfilePicture { get; set; }
 
-    public User(Guid id, string name, DateTime birthdate, string email, string password, string phone,
-        string profilePicture)
+    public User(long id, string name, DateTime birthdate, string email, string password, string phone,
+        string? profilePicture = null)
     {
         ID = id;
         Name = name;
@@ -30,6 +29,6 @@ public abstract class User
         Email = email;
         Password = password;
         Phone = phone;
-        ProfilePicture = profilePicture;
+        ProfilePicture = profilePicture ?? "https://cdn.britannica.com/07/183407-050-C35648B5/Chicken.jpg";
     }
 }

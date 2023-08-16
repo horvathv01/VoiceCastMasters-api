@@ -1,3 +1,7 @@
+using VoiceCastMasters_api.DAL;
+using VoiceCastMasters_api.Model;
+using VoiceCastMasters_api.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -17,8 +21,11 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddEndpointsApiExplorer();
 // builder.Services.AddSwaggerGen();
+
+builder.Services.AddSingleton<IRepository<Actor>, InMemoryActorRepository>();
+builder.Services.AddTransient<IUserProvider, UserProvider>();
 
 var app = builder.Build();
 
