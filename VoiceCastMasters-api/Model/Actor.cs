@@ -2,7 +2,7 @@
 
 public class Actor : User
 {
-    public Dictionary<Actor, byte> Relations;
-    public List<string> SampleURL;
+    public Dictionary<Actor, byte> Relations { get; set; }
+    public List<string> SampleURL { get; set; }
     public bool IsDirector { get; set; } = false;
 }
