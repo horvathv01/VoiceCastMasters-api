@@ -1,4 +1,6 @@
-﻿namespace VoiceCastMasters_api.Services;
+﻿using VoiceCastMasters_api.Model;
+
+namespace VoiceCastMasters_api.Services;
 
 public interface IUserProvider
 {
