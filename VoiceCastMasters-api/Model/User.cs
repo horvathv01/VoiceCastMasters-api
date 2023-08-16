@@ -20,4 +20,16 @@ public abstract class User
     public string Phone { get; set; }
     [Required] 
     public string ProfilePicture { get; set; } = "https://cdn.britannica.com/07/183407-050-C35648B5/Chicken.jpg";
+
+    public User(Guid id, string name, DateTime birthdate, string email, string password, string phone,
+        string profilePicture)
+    {
+        ID = id;
+        Name = name;
+        BirthDate = birthdate;
+        Email = email;
+        Password = password;
+        Phone = phone;
+        ProfilePicture = profilePicture;
+    }
 }
