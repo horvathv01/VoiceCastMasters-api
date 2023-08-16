@@ -2,5 +2,6 @@
 
 public class Actor
 {
-    
+    public Dictionary<Actor, byte> Relations;
+    public List<string> SampleURL;
 }
