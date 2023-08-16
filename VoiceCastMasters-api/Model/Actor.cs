@@ -6,9 +6,12 @@ public class Actor : User
     public List<string> SampleURL { get; set; }
     public bool IsDirector { get; set; } = false;
 
-    public Actor(Guid id, string name, DateTime birthdate, string email, string password, string phone, string profilePicture) : 
+    public Actor(long id, string name, DateTime birthdate, string email, string password, string phone, string? profilePicture = null,
+        Dictionary<Actor, byte>? relations = null, List<string>? sampleUrl = null, bool? isDirector = null) :
         base(id, name, birthdate, email, password, phone, profilePicture)
     {
-        
+        Relations = relations ?? new Dictionary<Actor, byte>();
+        SampleURL = sampleUrl ?? new List<string>();
+        IsDirector = isDirector ?? false;
     }
 }
