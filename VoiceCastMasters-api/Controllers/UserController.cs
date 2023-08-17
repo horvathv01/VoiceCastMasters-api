@@ -20,16 +20,18 @@ public class UserController : ControllerBase
     [HttpGet]
     public IActionResult GetUserByID()
     {
+        long id = 0;
         try
         {
             Uri deleteUri = new Uri(Request.GetDisplayUrl());
-            long id = (long)Convert.ToDouble(HttpUtility.ParseQueryString(deleteUri.Query).Get("userid"));
+            id = (long)Convert.ToDouble(HttpUtility.ParseQueryString(deleteUri.Query).Get("userid"));
+            if (id == 0) return BadRequest("No ID provided");
             User user = _userProvider.GetUserById(id);
             return Ok(user);
         }
         catch (Exception e)
         {
-            return new ObjectResult(HttpStatusCode.BadRequest);
+            return NotFound($"User with such ID ({id}) is not found");
         }
         
     }
@@ -41,19 +43,32 @@ public class UserController : ControllerBase
         return NotFound("No users in database");
     }
     
-    [HttpPut("actor/update")]
-    public IActionResult CreateUser(User user)
+    [HttpPut("register")]
+    public IActionResult CreateUser([FromBody] User user)
     {
         try
         {
-            if (_userProvider.RegisterUser(user)) return Ok("User created successfully");
+            if (_userProvider.RegisterUser(user)) return Ok($"User created successfully with ID {user.ID}.");
             return new ObjectResult(HttpStatusCode.BadGateway);
         }
         catch (Exception e)
         {
-            return new ObjectResult(HttpStatusCode.BadRequest);
+            return BadRequest("User might have already been created.");
         }
         
+    }
+
+    [HttpPut("actor/update")]
+    public IActionResult UpdateUser([FromBody] ActorDTO actor)
+    {
+        
+        Uri deleteUri = new Uri(Request.GetDisplayUrl());
+        long id = (long)Convert.ToDouble(HttpUtility.ParseQueryString(deleteUri.Query).Get("userid"));
+        if (id == 0) return BadRequest("No ID provided");
+        User user = new Actor(id, actor.Name, actor.BirthDate, actor.Email, actor.Password, actor.Phone,
+            actor.ProfilePicture);
+        if (_userProvider.UpdateUser(id, user)) return Ok($"Successfully updated user with ID {user.ID}.");
+        return NotFound($"User with such ID ({user.ID}) is not found");
     }
     
     [HttpDelete("delete")]
@@ -63,7 +78,7 @@ public class UserController : ControllerBase
         try
         {
             long id = (long)Convert.ToDouble(HttpUtility.ParseQueryString(deleteUri.Query).Get("userid"));
-            if (_userProvider.DeleteUser(id)) return Ok("User is successfully removed from the database");
+            if (_userProvider.DeleteUser(id)) return Ok($"User with ID {id} is successfully removed from the database");
             return NotFound("No user with such id");
         }
         catch (Exception e)

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace VoiceCastMasters_api.Model;
 
@@ -19,7 +20,7 @@ public abstract class User
     [Required]
     public string Phone { get; set; }
     public string ProfilePicture { get; set; }
-
+    [JsonConstructor]
     public User(long id, string name, DateTime birthdate, string email, string password, string phone,
         string? profilePicture = null)
     {
