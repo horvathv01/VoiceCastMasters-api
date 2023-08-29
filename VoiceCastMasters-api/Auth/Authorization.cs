@@ -13,7 +13,8 @@ public class Authorization : IAuthorization
 
     public string HashPassword(User user, string passwordToHash)
     {
-        throw new NotImplementedException();
+        string salt = GenerateSalt(user);
+        return _passwordHasher.HashPassword(salt, passwordToHash);
     }
 
     private string GenerateSalt(User user)
