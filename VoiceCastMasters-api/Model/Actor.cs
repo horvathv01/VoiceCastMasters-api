@@ -1,4 +1,6 @@
-﻿namespace VoiceCastMasters_api.Model;
+﻿using VoiceCastMasters_api.Enums;
+
+namespace VoiceCastMasters_api.Model;
 
 public class Actor : User
 {
@@ -10,6 +12,7 @@ public class Actor : User
         Dictionary<Actor, byte>? relations = null, List<string>? sampleUrl = null, bool? isDirector = null) :
         base(id, name, birthdate, email, password, phone, profilePicture)
     {
+        Role = Roles.Actor;
         Relations = relations ?? new Dictionary<Actor, byte>();
         SampleURL = sampleUrl ?? new List<string>();
         IsDirector = isDirector ?? false;

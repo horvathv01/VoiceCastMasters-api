@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using VoiceCastMasters_api.Enums;
 
 namespace VoiceCastMasters_api.Model;
 
@@ -20,6 +21,8 @@ public abstract class User
     [Required]
     public string Phone { get; set; }
     public string ProfilePicture { get; set; }
+
+    public Roles? Role { get; set; } = null;
     [JsonConstructor]
     public User(long id, string name, DateTime birthdate, string email, string password, string phone,
         string? profilePicture = null)
@@ -32,4 +35,11 @@ public abstract class User
         Phone = phone;
         ProfilePicture = profilePicture ?? "https://cdn.britannica.com/07/183407-050-C35648B5/Chicken.jpg";
     }
+
+    public User(Actor actor)
+    {
+        
+    }
+    
+    
 }

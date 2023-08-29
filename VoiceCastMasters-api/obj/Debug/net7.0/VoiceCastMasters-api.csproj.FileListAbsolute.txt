@@ -31,3 +31,5 @@
 /home/hvz/Dokumentumok/CodeCool/projektek/5-JobHunt-Projects/VoiceCastMasters/VoiceCastMasters-api/VoiceCastMasters-api/obj/Debug/net7.0/VoiceCastMasters-api.pdb
 /home/hvz/Dokumentumok/CodeCool/projektek/5-JobHunt-Projects/VoiceCastMasters/VoiceCastMasters-api/VoiceCastMasters-api/obj/Debug/net7.0/VoiceCastMasters-api.genruntimeconfig.cache
 /home/hvz/Dokumentumok/CodeCool/projektek/5-JobHunt-Projects/VoiceCastMasters/VoiceCastMasters-api/VoiceCastMasters-api/obj/Debug/net7.0/ref/VoiceCastMasters-api.dll
+/home/hvz/Dokumentumok/Codecool/Projektek/5-JobHunt-Projects/VoiceCastMasters/VoiceCastMasters-api/VoiceCastMasters-api/bin/Debug/net7.0/Microsoft.EntityFrameworkCore.dll
+/home/hvz/Dokumentumok/Codecool/Projektek/5-JobHunt-Projects/VoiceCastMasters/VoiceCastMasters-api/VoiceCastMasters-api/bin/Debug/net7.0/Microsoft.EntityFrameworkCore.Abstractions.dll

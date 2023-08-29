@@ -3,10 +3,10 @@ using VoiceCastMasters_api.Model;
 
 namespace VoiceCastMasters_api.Services;
 
-public class UserProvider : IUserProvider
+public class ActorService : IActorService
 {
     private IRepository<Actor> _repository;
-    public UserProvider(IRepository<Actor> repository)
+    public ActorService(IRepository<Actor> repository)
     {
         _repository = repository;
     }
