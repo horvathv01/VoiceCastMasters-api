@@ -1,15 +1,22 @@
 ﻿using VoiceCastMasters_api.Model;
+using Microsoft.AspNetCore.Identity;
 
 namespace VoiceCastMasters_api.Auth;
 
 public class Authorization : IAuthorization
-{
-    public bool Authorize()
+{   private PasswordHasher<string> _passwordHasher = new ();
+    public PasswordVerificationResult Authorize(User user, string hashedPassword, string providedPass)
+    {
+        string salt = GenerateSalt(user);
+        return _passwordHasher.VerifyHashedPassword(salt, hashedPassword, providedPass);
+    }
+
+    public string HashPassword(User user, string passwordToHash)
     {
         throw new NotImplementedException();
     }
 
-    public string HashPassword(User user, string passwordToHash)
+    private string GenerateSalt(User user)
     {
         throw new NotImplementedException();
     }
