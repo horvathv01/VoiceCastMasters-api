@@ -12,10 +12,10 @@ namespace VoiceCastMasters_api.Controllers;
 [Route("users")]
 public class UserController : ControllerBase
 {
-    private IUserProvider _userProvider;
-    public UserController(IUserProvider userProvider)
+    private IActorService _actorService;
+    public UserController(IActorService actorService)
     {
-        _userProvider = userProvider;
+        _actorService = actorService;
     }
     [HttpGet]
     public IActionResult GetUserByID()
@@ -26,7 +26,7 @@ public class UserController : ControllerBase
             Uri deleteUri = new Uri(Request.GetDisplayUrl());
             id = (long)Convert.ToDouble(HttpUtility.ParseQueryString(deleteUri.Query).Get("userid"));
             if (id == 0) return BadRequest("No ID provided");
-            User user = _userProvider.GetUserById(id);
+            User user = _actorService.GetUserById(id);
             return Ok(user);
         }
         catch (Exception e)
@@ -38,7 +38,7 @@ public class UserController : ControllerBase
     [HttpGet("actors")]
     public IActionResult GetAllActors()
     {
-        List<Actor> actorsList = _userProvider.GetActorsList();
+        List<Actor> actorsList = _actorService.GetActorsList();
         if (actorsList.Count > 0) return Ok(actorsList);
         return NotFound("No users in database");
     }
@@ -48,7 +48,7 @@ public class UserController : ControllerBase
     {
         try
         {
-            if (_userProvider.RegisterUser(user)) return Ok($"User created successfully with ID {user.ID}.");
+            if (_actorService.RegisterUser(user)) return Ok($"User created successfully with ID {user.ID}.");
             return new ObjectResult(HttpStatusCode.BadGateway);
         }
         catch (Exception e)
@@ -67,7 +67,7 @@ public class UserController : ControllerBase
         if (id == 0) return BadRequest("No ID provided");
         User user = new Actor(id, actor.Name, actor.BirthDate, actor.Email, actor.Password, actor.Phone,
             actor.ProfilePicture);
-        if (_userProvider.UpdateUser(id, user)) return Ok($"Successfully updated user with ID {user.ID}.");
+        if (_actorService.UpdateUser(id, user)) return Ok($"Successfully updated user with ID {user.ID}.");
         return NotFound($"User with such ID ({user.ID}) is not found");
     }
     
@@ -78,7 +78,7 @@ public class UserController : ControllerBase
         try
         {
             long id = (long)Convert.ToDouble(HttpUtility.ParseQueryString(deleteUri.Query).Get("userid"));
-            if (_userProvider.DeleteUser(id)) return Ok($"User with ID {id} is successfully removed from the database");
+            if (_actorService.DeleteUser(id)) return Ok($"User with ID {id} is successfully removed from the database");
             return NotFound("No user with such id");
         }
         catch (Exception e)

@@ -9,9 +9,9 @@ namespace VoiceCastMasters_api.Controllers;
 [Route("test")]
 public class TestController : ControllerBase
 {
-    private IUserProvider _provider;
+    private IActorService _provider;
 
-    public TestController(IUserProvider provider)
+    public TestController(IActorService provider)
     {
         _provider = provider;
     }

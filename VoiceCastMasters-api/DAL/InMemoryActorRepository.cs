@@ -8,7 +8,6 @@ public class InMemoryActorRepository : IRepository<Actor>
 
     public InMemoryActorRepository(List<Actor>? actors = null)
     {
-        Console.WriteLine("lefutott");
         if (actors == null)
         {
             Prepopulate();
@@ -33,7 +32,7 @@ public class InMemoryActorRepository : IRepository<Actor>
             _actors.Add(actor);
         }
 
-        Console.WriteLine("InMemory repository has been prepopulated.");
+        Console.WriteLine("InMemory Actor repository has been prepopulated.");
     }
     
     public bool Add(Actor entity)

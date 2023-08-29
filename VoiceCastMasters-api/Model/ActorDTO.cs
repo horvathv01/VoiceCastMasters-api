@@ -1,6 +1,8 @@
+using VoiceCastMasters_api.Enums;
+
 namespace VoiceCastMasters_api.Model;
 
-public class ActorDTO
+public class ActorDTO : User
 {
     public long ID { get; }
     public string Name { get; set; }
@@ -9,12 +11,13 @@ public class ActorDTO
     public string Password { get; set; }
     public string Phone { get; set; }
     public string ProfilePicture { get; set; } = "https://cdn.britannica.com/07/183407-050-C35648B5/Chicken.jpg";
+    
+    public string Role { get; set; }
     public Dictionary<ActorDTO, byte> Relations { get; set; }
     public List<string> SampleURL { get; set; }
-    public bool IsDirector { get; set; } = false;
 
     public ActorDTO(long id, string name, DateTime birthdate, string email, string password, string phone,
-        string profilePicture, Dictionary<ActorDTO, byte> relations, List<string> sampleUrl, bool isDirector)
+        string profilePicture, Dictionary<ActorDTO, byte> relations, List<string> sampleUrl, Roles role = Roles.Actor) : base(id, name, birthdate, email, password, phone, profilePicture)
     {
         ID = id;
         Name = name;
@@ -25,10 +28,10 @@ public class ActorDTO
         ProfilePicture = profilePicture;
         Relations = relations;
         SampleURL = sampleUrl;
-        IsDirector = isDirector;
+        Role = role.ToString();
     }
 
-    public ActorDTO(Actor actor)
+    public ActorDTO(Actor actor) : base(actor)
     {
         ID = actor.ID;
         Name = actor.Name;
@@ -39,6 +42,6 @@ public class ActorDTO
         ProfilePicture = actor.ProfilePicture;
         Relations = actor.Relations.ToDictionary(kvp => new ActorDTO(kvp.Key), kvp => kvp.Value);
         SampleURL = actor.SampleURL;
-        IsDirector = actor.IsDirector;   
+        Role = actor.Role.ToString();
     }
 }

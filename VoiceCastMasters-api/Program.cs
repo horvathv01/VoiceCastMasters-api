@@ -1,4 +1,6 @@
 using System.Text.Json;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.Options;
 using VoiceCastMasters_api.DAL;
 using VoiceCastMasters_api.Model;
 using VoiceCastMasters_api.Services;
@@ -25,6 +27,19 @@ builder.Services.AddCors(options =>
     );
 });
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+        {
+            options.Events.OnRedirectToLogin = context =>
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Task.CompletedTask;
+            };
+            options.Cookie.Name = "VoiceCastMastersCookie";
+            options.Cookie.SameSite = SameSiteMode.None;
+            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        });
+
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
@@ -35,7 +50,8 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 // builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IRepository<Actor>, InMemoryActorRepository>();
-builder.Services.AddTransient<IUserProvider, UserProvider>();
+builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IActorService, ActorService>();
 
 var app = builder.Build();
 
@@ -50,6 +66,7 @@ app.UseCors("LocalNetwork");
 
 //app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

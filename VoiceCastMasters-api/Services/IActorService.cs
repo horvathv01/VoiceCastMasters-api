@@ -2,7 +2,7 @@
 
 namespace VoiceCastMasters_api.Services;
 
-public interface IUserProvider
+public interface IActorService
 {
     public List<Actor> GetActorsList();
     public User GetUserById(long id);
