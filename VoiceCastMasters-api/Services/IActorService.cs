@@ -5,8 +5,8 @@ namespace VoiceCastMasters_api.Services;
 public interface IActorService
 {
     public List<Actor> GetActorsList();
-    public User GetUserById(long id);
-    public bool UpdateUser(long id, User newUser);
+    public Actor GetActorByID(long id);
+    public bool UpdateUser(long id, Actor actor);
     public bool DeleteUser(long id);
-    public bool RegisterUser(User user);
+    public bool AddActor(ActorDTO actor);
 }

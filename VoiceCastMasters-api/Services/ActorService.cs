@@ -14,15 +14,15 @@ public class ActorService : IActorService
     {
         return _repository.GetAll().ToList();
     }
-
-    public User GetUserById(long id)
+    
+    public Actor GetActorByID(long id)
     {
         return _repository.GetById(id);
     }
 
-    public bool UpdateUser(long id, User newUser)
+    public bool UpdateUser(long id, Actor actor)
     {
-        return _repository.Update(id, (Actor)newUser);
+        return _repository.Update(id, actor);
     }
 
     public bool DeleteUser(long id)
@@ -30,8 +30,34 @@ public class ActorService : IActorService
         return _repository.Delete(id);
     }
 
-    public bool RegisterUser(User user)
+    public bool AddActor(ActorDTO actorDto)
     {
-        return _repository.Add((Actor)user);
+        Dictionary<Actor, byte> relations = actorDto.Relations.Select(rel =>
+            new KeyValuePair<Actor, byte>(DTOToActor(rel.Key), rel.Value)).ToDictionary(relation =>
+            relation.Key, relation => relation.Value);
+        Actor actor;
+
+        if (actorDto.Role == "Director")
+        {
+            actor = new Director(actorDto.Name, actorDto.BirthDate.ToString(),
+                actorDto.Email, actorDto.Password, actorDto.Phone, actorDto.ProfilePicture, relations,
+                actorDto.SampleURL
+            );
+        }
+        else
+        {
+            actor = new Actor(actorDto.Name, actorDto.BirthDate.ToString(),
+                actorDto.Email, actorDto.Password, actorDto.Phone, actorDto.ProfilePicture, relations,
+                actorDto.SampleURL
+            );
+        }
+        return _repository.Add(actor);
+    }
+
+    private Actor DTOToActor(ActorDTO dto)
+    {
+        return _repository.GetById(dto.ID);
     }
 }
+
+    

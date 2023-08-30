@@ -4,9 +4,9 @@ namespace VoiceCastMasters_api.Services;
 
 public interface IUserService
 {
-    Task<List<User>> GetAllUsers();
-    Task<User> GetUserById(long id);
-    Task<bool> AddUser(User user);
+    List<User> GetAllUsers();
+    User GetUserById(long id);
+    bool AddUser(User user);
     Task<bool> UpdateUser(User user);
     Task<bool> DeleteUser(User user);
 

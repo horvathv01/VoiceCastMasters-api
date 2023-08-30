@@ -20,7 +20,7 @@ public class ActorDTO : User
 
         [JsonConstructor]
         public ActorDTO(long id, string name, string birthdate, string email, string password, string phone,
-            string profilePicture, Dictionary<ActorDTO, byte> relations, List<string> sampleUrl, Roles role = Roles.Actor)
+            string profilePicture, Dictionary<ActorDTO, byte> relations, List<string> sampleUrl, string role = "Actor")
         {
             ID = id;
             Name = name;
@@ -31,7 +31,7 @@ public class ActorDTO : User
             ProfilePicture = profilePicture;
             Relations = relations;
             SampleURL = sampleUrl;
-            Role = role.ToString();
+            Role = role;
         }
 
     public ActorDTO(Actor actor)

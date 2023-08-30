@@ -18,10 +18,12 @@ public class AccessController : ControllerBase
 {
     private readonly IUserService _userService;
     private readonly IAuthorization _authorizer;
+    private readonly IActorService _actorService;
 
-    public AccessController(IUserService userService, IAuthorization authorizer)
+    public AccessController(IUserService userService, IAuthorization authorizer, IActorService actorService)
     {
         _userService = userService;
+        _actorService = actorService;
         _authorizer = authorizer;
     }
 
@@ -33,10 +35,10 @@ public class AccessController : ControllerBase
     }
 
     [HttpPost("registration")]
-    public async Task<IActionResult> RegisterUser([FromBody] ActorDTO actor)
+    public async Task<IActionResult> RegisterActor([FromBody] ActorDTO actor)
     {
         Console.WriteLine("lefutott");
-        await _userService.AddUser(actor);
+        _actorService.AddActor(actor);
         return Ok();
     }
 

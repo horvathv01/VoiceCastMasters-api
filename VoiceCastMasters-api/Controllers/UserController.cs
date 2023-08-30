@@ -26,7 +26,7 @@ public class UserController : ControllerBase
             Uri deleteUri = new Uri(Request.GetDisplayUrl());
             id = (long)Convert.ToDouble(HttpUtility.ParseQueryString(deleteUri.Query).Get("userid"));
             if (id == 0) return BadRequest("No ID provided");
-            User user = _actorService.GetUserById(id);
+            User user = _actorService.GetActorByID(id);
             return Ok(user);
         }
         catch (Exception e)
@@ -48,7 +48,7 @@ public class UserController : ControllerBase
     {
         try
         {
-            if (_actorService.RegisterUser(user)) return Ok($"User created successfully with ID {user.ID}.");
+            if (_actorService.AddActor((ActorDTO)user)) return Ok($"User created successfully with ID {user.ID}.");
             return new ObjectResult(HttpStatusCode.BadGateway);
         }
         catch (Exception e)
@@ -65,9 +65,9 @@ public class UserController : ControllerBase
         Uri deleteUri = new Uri(Request.GetDisplayUrl());
         long id = (long)Convert.ToDouble(HttpUtility.ParseQueryString(deleteUri.Query).Get("userid"));
         if (id == 0) return BadRequest("No ID provided");
-        User user = new Actor(id, actor.Name, actor.BirthDate.ToString(), actor.Email, actor.Password, actor.Phone,
+        User user = new Actor(actor.Name, actor.BirthDate.ToString(), actor.Email, actor.Password, actor.Phone,
             actor.ProfilePicture);
-        if (_actorService.UpdateUser(id, user)) return Ok($"Successfully updated user with ID {user.ID}.");
+        if (_actorService.UpdateUser(id, (Actor)user)) return Ok($"Successfully updated user with ID {user.ID}.");
         return NotFound($"User with such ID ({user.ID}) is not found");
     }
     

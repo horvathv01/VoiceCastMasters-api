@@ -1,3 +1,4 @@
+using VoiceCastMasters_api.DAL;
 using VoiceCastMasters_api.Model;
 
 namespace VoiceCastMasters_api.Services;
@@ -5,25 +6,31 @@ namespace VoiceCastMasters_api.Services;
 public class UserService : IUserService
 {
     private readonly IActorService _actorService;
+    private readonly IRepository<User> _userRepository;
 
-    public UserService(IActorService actorService)
+    public UserService(IActorService actorService, IRepository<User> userRepository)
     {
         _actorService = actorService;
+        _userRepository = userRepository;
     }
     
-    public async Task<List<User>> GetAllUsers()
+    public List<User> GetAllUsers()
     {
-        throw new NotImplementedException();
+        return _actorService.GetActorsList().Cast<User>().ToList();
     }
 
-    public async Task<User> GetUserById(long id)
+    public User GetUserById(long id)
     {
-        throw new NotImplementedException();
+        return _userRepository.GetById(id);
     }
 
-    public async Task<bool> AddUser(User user)
+    public bool AddUser(User user)
     {
-        throw new NotImplementedException();
+        if (_userRepository.Add(user))
+        {
+            return true;
+        }
+        return false;
     }
 
     public async Task<bool> UpdateUser(User user)
