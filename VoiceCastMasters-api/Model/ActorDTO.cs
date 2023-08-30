@@ -18,21 +18,21 @@ public class ActorDTO : User
     public List<string> SampleURL { get; set; }
     
 
-        [JsonConstructor]
-        public ActorDTO(long id, string name, string birthdate, string email, string password, string phone,
+    [Newtonsoft.Json.JsonConstructor]
+    public ActorDTO(long id, string name, string birthdate, string email, string password, string phone,
             string profilePicture, Dictionary<ActorDTO, byte> relations, List<string> sampleUrl, string role = "Actor")
-        {
-            ID = id;
-            Name = name;
-            BirthDate = DateTime.Parse(birthdate);
-            Email = email;
-            Password = password;
-            Phone = phone;
-            ProfilePicture = profilePicture;
-            Relations = relations;
-            SampleURL = sampleUrl;
-            Role = role;
-        }
+    {
+        ID = id;
+        Name = name;
+        BirthDate = DateTime.Parse(birthdate);
+        Email = email;
+        Password = password;
+        Phone = phone;
+        ProfilePicture = profilePicture;
+        Relations = relations;
+        SampleURL = sampleUrl;
+        Role = role;
+    }
 
     public ActorDTO(Actor actor)
     {
