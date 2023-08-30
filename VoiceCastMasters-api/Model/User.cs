@@ -26,10 +26,10 @@ public abstract class User
     public Roles? Role { get; set; } = null;
     
     [Newtonsoft.Json.JsonConstructor]
-    public User(long id, string name, string birthdate, string email, string password, string phone,
+    public User(string name, string birthdate, string email, string password, string phone,
         string? profilePicture = null)
     {
-        ID = id;
+//        ID = id;
         Name = name;
         DateTime result = DateTime.Now;
         DateTime.TryParse(birthdate.ToCharArray(), out result);
