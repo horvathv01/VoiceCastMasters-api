@@ -28,17 +28,17 @@ public class UserService : IUserService
 
     public async Task<bool> UpdateUser(User user)
     {
-        throw new NotImplementedException();
+       return _actorService.UpdateUser(user.ID, user);
     }
 
     public async Task<bool> DeleteUser(User user)
     {
-        throw new NotImplementedException();
+       return _actorService.DeleteUser(user.ID);
     }
 
-    public Task<User?> GetUserByEmail(string email)
+    public User? GetUserByEmail(string email)
     {
-        return null;
-        throw new NotImplementedException();
+        var user = _actorService.GetActorsList().First(actor => actor.Email.Equals(email));
+        return user;
     }
 }

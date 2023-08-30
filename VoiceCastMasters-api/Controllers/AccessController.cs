@@ -48,7 +48,7 @@ public class AccessController : ControllerBase
         var parts = credentials.Split(":");
         var email = parts[0];
         var encodedPassword = parts[1];
-        var user = await _userService.GetUserByEmail(email);
+        var user = _userService.GetUserByEmail(email);
 
         if (user == null || user.Role == null)
         {

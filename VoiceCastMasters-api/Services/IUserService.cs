@@ -10,5 +10,5 @@ public interface IUserService
     Task<bool> UpdateUser(User user);
     Task<bool> DeleteUser(User user);
 
-    Task<User?> GetUserByEmail(string email);
+    User? GetUserByEmail(string email);
 }
