@@ -8,6 +8,8 @@ using VoiceCastMasters_api.Model;
 using VoiceCastMasters_api.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace VoiceCastMasters_api.Controllers;
 
@@ -23,20 +25,18 @@ public class AccessController : ControllerBase
         _authorizer = authorizer;
     }
 
-    [HttpPost("registration")]
-    public async Task<IActionResult> RegisterUser([FromBody] User user)
+    [HttpPost("csirke")]
+    public IActionResult TryThis([FromBody] User user)
     {
-        if (user.Role == Roles.Admin)
-        {
-            await _userService.AddUser((Admin)user);
-        } else if (user.Role == Roles.Director)
-        {
-            await _userService.AddUser((Director)user);
-        }
-        else
-        {
-            await _userService.AddUser((Actor)user);
-        }
+        Console.WriteLine(user);
+        return Ok(user);
+    }
+
+    [HttpPost("registration")]
+    public async Task<IActionResult> RegisterUser([FromBody] ActorDTO actor)
+    {
+        Console.WriteLine("lefutott");
+        await _userService.AddUser(actor);
         return Ok();
     }
 

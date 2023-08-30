@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using VoiceCastMasters_api.Enums;
 
 namespace VoiceCastMasters_api.Model;
@@ -23,13 +24,16 @@ public abstract class User
     public string ProfilePicture { get; set; }
 
     public Roles? Role { get; set; } = null;
-    [JsonConstructor]
-    public User(long id, string name, DateTime birthdate, string email, string password, string phone,
+    
+    [Newtonsoft.Json.JsonConstructor]
+    public User(long id, string name, string birthdate, string email, string password, string phone,
         string? profilePicture = null)
     {
         ID = id;
         Name = name;
-        BirthDate = birthdate;
+        DateTime result = DateTime.Now;
+        DateTime.TryParse(birthdate.ToCharArray(), out result);
+        BirthDate = result;
         Email = email;
         Password = password;
         Phone = phone;
@@ -40,6 +44,14 @@ public abstract class User
     {
         
     }
-    
-    
+
+    public User()
+    {
+        
+    }
+
+    public override string ToString()
+    {
+        return "${ID}, ${Name}, ${BirthDate}, ${Email}, ${Password}, ${Phone}, ${ProfilePicture}, ${Role}";
+    }
 }

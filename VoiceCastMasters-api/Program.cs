@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Options;
+using VoiceCastMasters_api.Auth;
 using VoiceCastMasters_api.DAL;
 using VoiceCastMasters_api.Model;
 using VoiceCastMasters_api.Services;
@@ -40,16 +41,21 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
             options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
         });
 
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-});
+// builder.Services.AddControllers().AddJsonOptions(options =>
+// {
+//     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+//     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+// });
+
+builder.Services.AddControllers().AddNewtonsoftJson();
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 //builder.Services.AddEndpointsApiExplorer();
 // builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IRepository<Actor>, InMemoryActorRepository>();
+builder.Services.AddScoped<IAuthorization, Authorization>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IActorService, ActorService>();
 
