@@ -55,6 +55,7 @@ builder.Services.AddControllers().AddNewtonsoftJson();
 // builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IRepository<Actor>, InMemoryActorRepository>();
+builder.Services.AddSingleton<IRepository<User>, InMemoryUserRepository>();
 builder.Services.AddScoped<IAuthorization, Authorization>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IActorService, ActorService>();

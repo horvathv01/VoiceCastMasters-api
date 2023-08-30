@@ -37,9 +37,8 @@ public class AccessController : ControllerBase
     [HttpPost("registration")]
     public async Task<IActionResult> RegisterActor([FromBody] ActorDTO actor)
     {
-        Console.WriteLine("lefutott");
         _actorService.AddActor(actor);
-        return Ok();
+        return Ok("Registration was successful.");
     }
 
     [HttpPost("login")]

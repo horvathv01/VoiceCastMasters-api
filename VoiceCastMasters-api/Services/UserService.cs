@@ -35,7 +35,7 @@ public class UserService : IUserService
 
     public async Task<bool> UpdateUser(User user)
     {
-       return _actorService.UpdateUser(user.ID, user);
+       return _actorService.UpdateUser(user.ID, (Actor)user);
     }
 
     public async Task<bool> DeleteUser(User user)
