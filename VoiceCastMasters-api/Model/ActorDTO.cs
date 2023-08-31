@@ -20,7 +20,9 @@ public class ActorDTO : User
 
     [Newtonsoft.Json.JsonConstructor]
     public ActorDTO(long id, string name, string birthdate, string email, string password, string phone,
-            string profilePicture, Dictionary<ActorDTO, byte> relations, List<string> sampleUrl, string role = "Actor")
+            string profilePicture, Dictionary<ActorDTO, byte> relations, List<string> sampleUrl, string role = "Actor") : 
+        base(name, birthdate, email, password, phone,
+        profilePicture)
     {
         ID = id;
         Name = name;
@@ -34,7 +36,8 @@ public class ActorDTO : User
         Role = role;
     }
 
-    public ActorDTO(Actor actor)
+    public ActorDTO(Actor actor) : base(actor.Name, actor.BirthDate.ToString(), actor.Email, actor.Password, actor.Phone,
+        actor.ProfilePicture)
     {
         ID = actor.ID;
         Name = actor.Name;
@@ -52,6 +55,6 @@ public class ActorDTO : User
     
     public override string ToString()
     {
-        return "${ID}, ${Name}, ${BirthDate}, ${Email}, ${Password}, ${Phone}, ${ProfilePicture}, ${Role}";
+        return $"{ID}, {Name}, {BirthDate}, {Email}, {Password}, {Phone}, {ProfilePicture}, {Role}";
     }
 }

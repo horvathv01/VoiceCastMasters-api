@@ -8,6 +8,7 @@ using VoiceCastMasters_api.Model;
 using VoiceCastMasters_api.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -27,16 +28,17 @@ public class AccessController : ControllerBase
         _authorizer = authorizer;
     }
 
-    [HttpPost("csirke")]
-    public IActionResult TryThis([FromBody] User user)
-    {
-        Console.WriteLine(user);
-        return Ok(user);
-    }
-
     [HttpPost("registration")]
     public async Task<IActionResult> RegisterActor([FromBody] ActorDTO actor)
     {
+        var registeredUser = _userService.GetUserByEmail(actor.Email);
+        if (registeredUser != null)
+        {
+            return Conflict("This email has already been registered");
+        }
+        
+        string newPassword = _authorizer.HashPassword(actor, actor.Password);
+        actor.Password = newPassword;
         _actorService.AddActor(actor);
         return Ok("Registration was successful.");
     }
@@ -45,18 +47,21 @@ public class AccessController : ControllerBase
     public async Task<IActionResult> LoginUser()
     {
         string authorizationHeader = HttpContext.Request.Headers["Authorization"];
-        var credentials = Encoding.UTF8.GetString((Convert.FromBase64String(authorizationHeader)));
+        
+        var base64String = Convert.FromBase64String(authorizationHeader);
+        var credentials = Encoding.UTF8.GetString(base64String);
         var parts = credentials.Split(":");
         var email = parts[0];
         var encodedPassword = parts[1];
         var user = _userService.GetUserByEmail(email);
-
+        
         if (user == null || user.Role == null)
         {
             return Unauthorized();
         }
 
         var authorized = _authorizer.Authorize(user, user.Password, encodedPassword);
+        
         if (authorized == PasswordVerificationResult.Success)
         {
             var claims = new List<Claim>
@@ -79,32 +84,47 @@ public class AccessController : ControllerBase
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal,
                 authProperties);
-            user.Password = "";
-            
+
+            var userToSend = new ActorDTO((Actor)user);
+            userToSend.Password = "";
                 
             if (user.Role == Roles.Director || user.Role == Roles.Actor)
             {
                 //kill relational list by providing ActorDTO instead
-                user = new ActorDTO((Actor)user);
+                //user = new ActorDTO((Actor)user);
             }
-            return Ok(user);
+            return Ok(userToSend);
         }
 
         return Unauthorized();
     }
 
     [HttpPost("logout")]
+    [Authorize]
     public async Task<IActionResult> LogoutUser()
     {
         try
         {
+            string userName = HttpContext.User.Identity.Name;
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return Ok("User logged out successfully");
+            Console.WriteLine($"{userName} logged out successfully.");
+            return Ok($"{userName} logged out successfully");
         }
         catch (Exception e)
         {
             return StatusCode(500, $"Logout failed: {e.Message}");
         }
+    }
+
+    [HttpGet("test")]
+    //[Authorize]
+    [Authorize(Roles = "Actor")]
+    public IActionResult TestLoginFunctionality()
+    {
+        Console.WriteLine("test lefutott");
+        string userName = HttpContext.User.Identity.Name;
+        Console.WriteLine(userName + " login tested.");
+        return Ok($"Cookie works as intended. User Name: {userName}");
     }
     
     

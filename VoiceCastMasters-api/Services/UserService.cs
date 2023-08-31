@@ -45,7 +45,11 @@ public class UserService : IUserService
 
     public User? GetUserByEmail(string email)
     {
-        var user = _actorService.GetActorsList().First(actor => actor.Email.Equals(email));
+        var user = _actorService.GetActorsList().FirstOrDefault(actor => actor.Email.Equals(email));
+        if (user == null)
+        {
+            return _userRepository.GetByEmail(email);
+        }
         return user;
     }
 }

@@ -7,4 +7,6 @@ public interface IRepository<T>
     bool Update(long id, T entity);
     bool Delete(long id);
     IEnumerable<T> GetAll();
+
+    T? GetByEmail(string email);
 }

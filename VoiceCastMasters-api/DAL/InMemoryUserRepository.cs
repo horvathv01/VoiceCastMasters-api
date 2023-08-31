@@ -118,4 +118,9 @@ public class InMemoryUserRepository : IRepository<User>
         }
         return allUsers;
     }
+    
+    public User? GetByEmail(string email)
+    {
+        return _users.FirstOrDefault(a => a.Email == email);
+    }
 }

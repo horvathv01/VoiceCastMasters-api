@@ -31,11 +31,12 @@ builder.Services.AddCors(options =>
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
         {
-            options.Events.OnRedirectToLogin = context =>
+            
+            /*options.Events.OnRedirectToLogin = context =>
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 return Task.CompletedTask;
-            };
+            };*/
             options.Cookie.Name = "VoiceCastMastersCookie";
             options.Cookie.SameSite = SameSiteMode.None;
             options.Cookie.SecurePolicy = CookieSecurePolicy.Always;

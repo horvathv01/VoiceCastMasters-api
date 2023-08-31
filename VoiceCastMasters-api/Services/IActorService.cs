@@ -9,4 +9,6 @@ public interface IActorService
     public bool UpdateUser(long id, Actor actor);
     public bool DeleteUser(long id);
     public bool AddActor(ActorDTO actor);
+
+    Actor? GetActorByEmail(string email);
 }

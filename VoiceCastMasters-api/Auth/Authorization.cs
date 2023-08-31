@@ -25,6 +25,7 @@ public class Authorization : IAuthorization
 
     private string GenerateSalt(User user)
     {
+        
         string username = user.Name;
         List<char> charList = username.ToList();
         charList.Sort();
@@ -36,6 +37,6 @@ public class Authorization : IAuthorization
             salt.Add(_abc.IndexOf(c).ToString());
         }
         salt.Add("9");
-        return salt.ToString();
+        return String.Concat(salt);
     }
 }

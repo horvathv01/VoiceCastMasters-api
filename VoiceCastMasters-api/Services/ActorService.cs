@@ -54,6 +54,11 @@ public class ActorService : IActorService
         return _repository.Add(actor);
     }
 
+    public Actor? GetActorByEmail(string email)
+    {
+        return _repository.GetByEmail(email);
+    }
+
     private Actor DTOToActor(ActorDTO dto)
     {
         return _repository.GetById(dto.ID);

@@ -40,18 +40,8 @@ public abstract class User
         ProfilePicture = profilePicture ?? "https://cdn.britannica.com/07/183407-050-C35648B5/Chicken.jpg";
     }
 
-    public User(Actor actor)
-    {
-        
-    }
-
-    public User()
-    {
-        
-    }
-
     public override string ToString()
     {
-        return "${ID}, ${Name}, ${BirthDate}, ${Email}, ${Password}, ${Phone}, ${ProfilePicture}, ${Role}";
+        return $"{ID}, {Name}, {BirthDate}, {Email}, {Password}, {Phone}, {ProfilePicture}, {Role}";
     }
 }

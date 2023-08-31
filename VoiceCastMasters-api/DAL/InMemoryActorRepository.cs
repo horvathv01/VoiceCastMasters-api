@@ -95,4 +95,9 @@ public class InMemoryActorRepository : IRepository<Actor>
     {
         return _actors;
     }
+
+    public Actor? GetByEmail(string email)
+    {
+        return _actors.FirstOrDefault(a => a.Email == email);
+    }
 }
