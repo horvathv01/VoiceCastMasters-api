@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using VoiceCastMasters_api.Auth;
 using VoiceCastMasters_api.DAL;
@@ -36,7 +37,11 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 return Task.CompletedTask;
-            };*/
+            };
+            options.Events.OnRedirectToAccessDenied = context =>
+            {
+                context.Response.BodyWriter.WriteAsync("No user is logged in") ;
+            }*/
             options.Cookie.Name = "VoiceCastMastersCookie";
             options.Cookie.SameSite = SameSiteMode.None;
             options.Cookie.SecurePolicy = CookieSecurePolicy.Always;

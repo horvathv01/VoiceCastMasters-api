@@ -57,7 +57,7 @@ public class AccessController : ControllerBase
         
         if (user == null || user.Role == null)
         {
-            return Unauthorized();
+            return Unauthorized("Provided credentials are not valid");
         }
 
         var authorized = _authorizer.Authorize(user, user.Password, encodedPassword);
@@ -96,7 +96,7 @@ public class AccessController : ControllerBase
             return Ok(userToSend);
         }
 
-        return Unauthorized();
+        return Unauthorized("Provided credentials are not valid");
     }
 
     [HttpPost("logout")]
