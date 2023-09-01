@@ -31,16 +31,15 @@ public class AccessController : ControllerBase
     [HttpPost("registration")]
     public async Task<IActionResult> RegisterActor([FromBody] ActorDTO actor)
     {
+        if (actor.Password == "")
+        {
+            return BadRequest("Password is required");
+        }
         var registeredUser = _userService.GetUserByEmail(actor.Email);
         if (registeredUser != null)
         {
             return Conflict("This email has already been registered");
         }
-        if (actor.Password == "")
-        {
-            return Conflict("Password is required");
-        }
-        
         string newPassword = _authorizer.HashPassword(actor, actor.Password);
         actor.Password = newPassword;
         _actorService.AddActor(actor);
