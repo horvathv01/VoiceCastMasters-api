@@ -36,6 +36,10 @@ public class AccessController : ControllerBase
         {
             return Conflict("This email has already been registered");
         }
+        if (actor.Password == "")
+        {
+            return Conflict("Password is required");
+        }
         
         string newPassword = _authorizer.HashPassword(actor, actor.Password);
         actor.Password = newPassword;
