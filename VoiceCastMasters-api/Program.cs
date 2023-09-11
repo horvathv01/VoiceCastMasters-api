@@ -58,9 +58,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddControllers().AddNewtonsoftJson();
 
-builder.Services.AddDbContext<DatabaseContext>(option =>
+builder.Services.AddDbContext<DatabaseContext>(options =>
 {
-    option.UseNpgsql(builder.Configuration.GetConnectionString("CloudDb"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("CloudDb"));
 });
 
 
