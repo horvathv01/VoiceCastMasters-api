@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using VoiceCastMasters_api.Auth;
 using VoiceCastMasters_api.DAL;
@@ -29,6 +30,8 @@ builder.Services.AddCors(options =>
     );
 });
 
+
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
         {
@@ -54,6 +57,11 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 // });
 
 builder.Services.AddControllers().AddNewtonsoftJson();
+
+builder.Services.AddDbContext<DatabaseContext>(option =>
+{
+    option.UseNpgsql(builder.Configuration.GetConnectionString("CloudDb"));
+});
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
