@@ -32,24 +32,30 @@ public class ActorService : IActorService
 
     public bool AddActor(ActorDTO actorDto)
     {
+        /*
         Dictionary<Actor, byte> relations = actorDto.Relations.Select(rel =>
             new KeyValuePair<Actor, byte>(DTOToActor(rel.Key), rel.Value)).ToDictionary(relation =>
             relation.Key, relation => relation.Value);
+        */
         Actor actor;
+        DateTime birthDate = DateTime.MinValue;
+        DateTime.TryParse(actorDto.BirthDate, out birthDate);
 
         if (actorDto.Role == "Director")
         {
-            actor = new Director(actorDto.Name, actorDto.BirthDate.ToString(),
-                actorDto.Email, actorDto.Password, actorDto.Phone, actorDto.ProfilePicture, relations,
+            actor = new Director(actorDto.Name, birthDate,
+                actorDto.Email, actorDto.Password, actorDto.Phone, actorDto.ProfilePicture,
                 actorDto.SampleURL
             );
         }
         else
         {
-            actor = new Actor(actorDto.Name, actorDto.BirthDate.ToString(),
-                actorDto.Email, actorDto.Password, actorDto.Phone, actorDto.ProfilePicture, relations,
-                actorDto.SampleURL
-            );
+            actor = new Actor(actorDto.Name, birthDate, actorDto.Email, actorDto.Password, actorDto.Phone,
+                actorDto.ProfilePicture);
+            /*actor = new Actor(actorDto.Name, actorDto.BirthDate.ToString(),
+                actorDto.Email, actorDto.Password, actorDto.Phone, actorDto.ProfilePicture,
+                actorDto.SampleURL);
+            */
         }
         return _repository.Add(actor);
     }

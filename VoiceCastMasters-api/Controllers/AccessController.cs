@@ -40,7 +40,7 @@ public class AccessController : ControllerBase
         {
             return Conflict("This email has already been registered");
         }
-        string newPassword = _authorizer.HashPassword(actor, actor.Password);
+        string newPassword = _authorizer.HashPassword(actor.Name, actor.Password);
         actor.Password = newPassword;
         _actorService.AddActor(actor);
         return Ok("Registration was successful.");
@@ -63,7 +63,7 @@ public class AccessController : ControllerBase
             return Unauthorized("Provided credentials are not valid");
         }
 
-        var authorized = _authorizer.Authorize(user, user.Password, encodedPassword);
+        var authorized = _authorizer.Authorize(user.Name, user.Password, encodedPassword);
         
         if (authorized == PasswordVerificationResult.Success)
         {

@@ -11,22 +11,20 @@ public class Authorization : IAuthorization
         'i', 'í', 'j', 'k', 'l', 'm', 'n', 'o', 'ó', 'ö', 'ő', 'p', 'q', 
         'r', 's', 't', 'u', 'ú', 'ü', 'ű', 'v', 'w', 'x', 'y', 'z'
     };
-    public PasswordVerificationResult Authorize(User user, string hashedPassword, string providedPass)
+    public PasswordVerificationResult Authorize(string username, string hashedPassword, string providedPass)
     {
-        string salt = GenerateSalt(user);
+        string salt = GenerateSalt(username);
         return _passwordHasher.VerifyHashedPassword(salt, hashedPassword, providedPass);
     }
 
-    public string HashPassword(User user, string passwordToHash)
+    public string HashPassword(string username, string passwordToHash)
     {
-        string salt = GenerateSalt(user);
+        string salt = GenerateSalt(username);
         return _passwordHasher.HashPassword(salt, passwordToHash);
     }
 
-    private string GenerateSalt(User user)
+    private string GenerateSalt(string username)
     {
-        
-        string username = user.Name;
         List<char> charList = username.ToList();
         charList.Sort();
         charList.Reverse();

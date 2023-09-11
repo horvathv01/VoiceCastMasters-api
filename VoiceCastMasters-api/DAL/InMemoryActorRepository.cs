@@ -27,7 +27,7 @@ public class InMemoryActorRepository : IRepository<Actor>
             int year = random.Next(1950, 2015);
             int month = random.Next(1, 13);
             int day = random.Next(1,29);
-            Actor actor = new Actor($"actor{i}", new DateTime(year, month, day).ToString(), 
+            Actor actor = new Actor($"actor{i}", new DateTime(year, month, day), 
                 $"actor{i}@actorsguild.com", $"password{i}", $"+3670/123-456{i}");
             _actors.Add(actor);
         }

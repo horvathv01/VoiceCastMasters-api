@@ -13,20 +13,24 @@ public class DatabaseContext : DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<Actor>()
-            .ToTable("Actors")
             .HasKey(a => a.ID);
+        
+        modelBuilder.Entity<Relation>()
+            .HasKey(ar => ar.Id);
+        
+        modelBuilder.Entity<Relation>()
+            .HasOne(ar => ar.Actor1)
+            .WithMany()
+            .HasForeignKey(ar => ar.Actor1Id)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Relation>()
+            .HasOne(ar => ar.Actor2)
+            .WithMany()
+            .HasForeignKey(ar => ar.Actor2Id)
+            .OnDelete(DeleteBehavior.Restrict);
     }
-}
-
-public class DatabaseContextFactory : IDesignTimeDbContextFactory<DatabaseContext>
-{
-    public DatabaseContext CreateDbContext(string[] args)
-    {
-        var optionsBuilder = new DbContextOptionsBuilder<DatabaseContext>();
-        optionsBuilder.UseNpgsql("Host=34.88.126.174; Database=voice-cast-masters; Username=postgres; Password=VoiceOfVili");
-
-        return new DatabaseContext(optionsBuilder.Options);
-    }
-
 }

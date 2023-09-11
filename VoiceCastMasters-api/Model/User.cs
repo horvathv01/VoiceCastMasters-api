@@ -11,29 +11,26 @@ public abstract class User
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long ID { get; }
     
-    [Required]
     public string Name { get; set; }
-    [Required]
+    //public DateTime BirthDate { get; set; }
     public DateTime BirthDate { get; set; }
-    [Required]
     public string Email { get; set; }
-    [Required]
     public string Password { get; set; }
-    [Required]
     public string Phone { get; set; }
     public string ProfilePicture { get; set; }
 
     public Roles? Role { get; set; } = null;
     
     [Newtonsoft.Json.JsonConstructor]
-    public User(string name, string birthdate, string email, string password, string phone,
+    public User(string name, DateTime birthDate, string email, string password, string phone,
         string? profilePicture = null)
     {
 //        ID = id;
         Name = name;
-        DateTime result = DateTime.Now;
-        DateTime.TryParse(birthdate.ToCharArray(), out result);
-        BirthDate = result;
+        //DateTime result = DateTime.Now;
+        //DateTime.TryParse(birthdate.ToCharArray(), out result);
+        //BirthDate = result;
+        BirthDate = birthDate;
         Email = email;
         Password = password;
         Phone = phone;
