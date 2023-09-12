@@ -56,7 +56,17 @@ public class UserRepository : IRepository<User>
 
     public bool Delete(long id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            User entity = _databaseContext.Find<User>(id);
+            _databaseContext.Remove(entity);
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return false;
+        }
     }
 
     public IEnumerable<User> GetAll()
