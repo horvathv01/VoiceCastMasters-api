@@ -3,18 +3,18 @@ using VoiceCastMasters_api.Model;
 
 namespace VoiceCastMasters_api.DAL;
 
-public class UserRepository : IRepository<User>
+public class UserRepository : IRepository<Actor>
 {
     private DatabaseContext _databaseContext;
     public UserRepository(DatabaseContext databaseContext)
     {
         _databaseContext = databaseContext;
     }
-    public bool Add(User entity)
+    public bool Add(Actor entity)
     {
         try
         {
-            _databaseContext.Add(entity);
+            _databaseContext.Actors.Add(entity);
             _databaseContext.SaveChanges();
             return true;
         }
@@ -25,11 +25,11 @@ public class UserRepository : IRepository<User>
         }
     }
 
-    public User GetById(long id)
+    public Actor GetById(long id)
     {
         try
         {
-            User entity = _databaseContext.Find<User>(id);
+            Actor entity = _databaseContext.Actors.Find(id);
             return entity;
         }
         catch (Exception e)
@@ -39,11 +39,11 @@ public class UserRepository : IRepository<User>
         }
     }
 
-    public bool Update(long id, User entity)
+    public bool Update(long id, Actor entity)
     {
         try
         {
-            _databaseContext.Update(entity);
+            _databaseContext.Actors.Update(entity);
             return true;
         }
         catch (Exception e)
@@ -58,8 +58,8 @@ public class UserRepository : IRepository<User>
     {
         try
         {
-            User entity = _databaseContext.Find<User>(id);
-            _databaseContext.Remove(entity);
+            Actor entity = _databaseContext.Actors.Find(id);
+            _databaseContext.Actors.Remove(entity);
             return true;
         }
         catch (Exception e)
@@ -69,12 +69,12 @@ public class UserRepository : IRepository<User>
         }
     }
 
-    public IEnumerable<User> GetAll()
+    public IEnumerable<Actor> GetAll()
     {
         return _databaseContext.Actors.ToList();
     }
 
-    public User? GetByEmail(string email)
+    public Actor? GetByEmail(string email)
     {
         return _databaseContext.Actors.FirstOrDefault(e => e.Email.Equals(email));
     }
