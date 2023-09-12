@@ -68,8 +68,8 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 //builder.Services.AddEndpointsApiExplorer();
 // builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<IRepository<Actor>, InMemoryActorRepository>();
-builder.Services.AddSingleton<IRepository<User>, InMemoryUserRepository>();
+builder.Services.AddSingleton<IRepository<Actor>, ActorRepository>();
+//builder.Services.AddSingleton<IRepository<User>, InMemoryUserRepository>();
 builder.Services.AddScoped<IAuthorization, Authorization>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IActorService, ActorService>();

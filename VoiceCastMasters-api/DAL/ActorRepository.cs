@@ -3,10 +3,10 @@ using VoiceCastMasters_api.Model;
 
 namespace VoiceCastMasters_api.DAL;
 
-public class UserRepository : IRepository<Actor>
+public class ActorRepository : IRepository<Actor>
 {
     private DatabaseContext _databaseContext;
-    public UserRepository(DatabaseContext databaseContext)
+    public ActorRepository(DatabaseContext databaseContext)
     {
         _databaseContext = databaseContext;
     }
