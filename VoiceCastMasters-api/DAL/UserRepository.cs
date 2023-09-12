@@ -5,8 +5,8 @@ namespace VoiceCastMasters_api.DAL;
 
 public class UserRepository : IRepository<User>
 {
-    private DbContext _databaseContext;
-    public UserRepository(DbContext databaseContext)
+    private DatabaseContext _databaseContext;
+    public UserRepository(DatabaseContext databaseContext)
     {
         _databaseContext = databaseContext;
     }
@@ -71,11 +71,11 @@ public class UserRepository : IRepository<User>
 
     public IEnumerable<User> GetAll()
     {
-        throw new NotImplementedException();
+        return _databaseContext.Actors.ToList();
     }
 
     public User? GetByEmail(string email)
     {
-        throw new NotImplementedException();
+        return _databaseContext.Actors.FirstOrDefault(e => e.Email.Equals(email));
     }
 }
