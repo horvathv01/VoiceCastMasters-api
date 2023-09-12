@@ -68,13 +68,14 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 //builder.Services.AddEndpointsApiExplorer();
 // builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<IRepository<Actor>, ActorRepository>();
-//builder.Services.AddSingleton<IRepository<User>, InMemoryUserRepository>();
+builder.Services.AddTransient<IRepository<Actor>, ActorRepository>();
+
 builder.Services.AddScoped<IAuthorization, Authorization>();
-builder.Services.AddTransient<IUserService, UserService>();
+
 builder.Services.AddTransient<IActorService, ActorService>();
 
 var app = builder.Build();
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // Configure the HTTP request pipeline.
 // if (app.Environment.IsDevelopment())
