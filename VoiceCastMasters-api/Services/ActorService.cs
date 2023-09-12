@@ -1,4 +1,6 @@
-﻿using VoiceCastMasters_api.DAL;
+﻿using Microsoft.AspNetCore.Identity;
+using VoiceCastMasters_api.Auth;
+using VoiceCastMasters_api.DAL;
 using VoiceCastMasters_api.Model;
 
 namespace VoiceCastMasters_api.Services;
@@ -6,37 +8,43 @@ namespace VoiceCastMasters_api.Services;
 public class ActorService : IActorService
 {
     private IRepository<Actor> _repository;
-    public ActorService(IRepository<Actor> repository)
+    private IAuthorization _authorization;
+    public ActorService(IRepository<Actor> repository, IAuthorization authorization)
     {
         _repository = repository;
+        _authorization = authorization;
     }
-    public List<Actor> GetActorsList()
+    public async Task<List<Actor>?> GetActorsList()
     {
-        return _repository.GetAll().ToList();
+        IEnumerable<Actor>? actors = await _repository.GetAll();
+        return actors.ToList();
     }
     
-    public Actor GetActorByID(long id)
+    public async Task<Actor?> GetActorByID(long id)
     {
-        return _repository.GetById(id);
+        return await _repository.GetById(id);
     }
 
-    public bool UpdateUser(long id, Actor actor)
+    public async Task<bool> UpdateUser(long id, Actor actor)
     {
-        return _repository.Update(id, actor);
+        Actor? actorFromDb = await GetActorByID(actor.ID);
+        if (actorFromDb == null) return false;
+        PasswordVerificationResult passwordChanged = _authorization.Authorize(actorFromDb.Name, actorFromDb.Password, actor.Password);
+        if (actorFromDb.Name != actor.Name || passwordChanged != PasswordVerificationResult.Success)
+        {
+            actor.Password = _authorization.HashPassword(actor.Name, actor.Password);
+        }
+        return await _repository.Update(id, actor);
     }
 
-    public bool DeleteUser(long id)
+    public async Task<bool> DeleteUser(long id)
     {
-        return _repository.Delete(id);
+        return await _repository.Delete(id);
     }
 
-    public bool AddActor(ActorDTO actorDto)
+    public async Task<bool> AddActor(ActorDTO actorDto)
     {
-        /*
-        Dictionary<Actor, byte> relations = actorDto.Relations.Select(rel =>
-            new KeyValuePair<Actor, byte>(DTOToActor(rel.Key), rel.Value)).ToDictionary(relation =>
-            relation.Key, relation => relation.Value);
-        */
+        actorDto.SampleURL = new List<string>();
         Actor actor;
         DateTime birthDate = DateTime.MinValue;
         DateTime.TryParse(actorDto.BirthDate, out birthDate);
@@ -44,30 +52,22 @@ public class ActorService : IActorService
         if (actorDto.Role == "Director")
         {
             actor = new Director(actorDto.Name, birthDate,
-                actorDto.Email, actorDto.Password, actorDto.Phone, actorDto.ProfilePicture,
-                actorDto.SampleURL
-            );
+                actorDto.Email, actorDto.Password, actorDto.Phone,actorDto.SampleURL,
+                actorDto.ProfilePicture
+                );
         }
         else
         {
             actor = new Actor(actorDto.Name, birthDate, actorDto.Email, actorDto.Password, actorDto.Phone,
-                actorDto.ProfilePicture);
-            /*actor = new Actor(actorDto.Name, actorDto.BirthDate.ToString(),
-                actorDto.Email, actorDto.Password, actorDto.Phone, actorDto.ProfilePicture,
-                actorDto.SampleURL);
-            */
+                actorDto.SampleURL, actorDto.ProfilePicture
+                );
         }
-        return _repository.Add(actor);
+        return await _repository.Add(actor);
     }
 
-    public Actor? GetActorByEmail(string email)
+    public async Task<Actor?> GetActorByEmail(string email)
     {
-        return _repository.GetByEmail(email);
-    }
-
-    private Actor DTOToActor(ActorDTO dto)
-    {
-        return _repository.GetById(dto.ID);
+        return await _repository.GetByEmail(email);
     }
 }
 

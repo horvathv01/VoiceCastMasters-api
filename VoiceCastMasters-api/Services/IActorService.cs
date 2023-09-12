@@ -4,11 +4,11 @@ namespace VoiceCastMasters_api.Services;
 
 public interface IActorService
 {
-    public List<Actor> GetActorsList();
-    public Actor GetActorByID(long id);
-    public bool UpdateUser(long id, Actor actor);
-    public bool DeleteUser(long id);
-    public bool AddActor(ActorDTO actor);
+    public Task<List<Actor>?> GetActorsList();
+    public Task<Actor?> GetActorByID(long id);
+    public Task<bool> UpdateUser(long id, Actor actor);
+    public Task<bool> DeleteUser(long id);
+    public Task<bool> AddActor(ActorDTO actor);
 
-    Actor? GetActorByEmail(string email);
+    Task<Actor?> GetActorByEmail(string email);
 }
