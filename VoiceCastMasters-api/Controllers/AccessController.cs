@@ -17,13 +17,11 @@ namespace VoiceCastMasters_api.Controllers;
 [ApiController, Route("access")]
 public class AccessController : ControllerBase
 {
-    private readonly IUserService _userService;
     private readonly IAuthorization _authorizer;
     private readonly IActorService _actorService;
 
-    public AccessController(IUserService userService, IAuthorization authorizer, IActorService actorService)
+    public AccessController(IAuthorization authorizer, IActorService actorService)
     {
-        _userService = userService;
         _actorService = actorService;
         _authorizer = authorizer;
     }
@@ -35,14 +33,14 @@ public class AccessController : ControllerBase
         {
             return BadRequest("Password is required");
         }
-        var registeredUser = _userService.GetUserByEmail(actor.Email);
+        var registeredUser = await _actorService.GetActorByEmail(actor.Email);
         if (registeredUser != null)
         {
             return Conflict("This email has already been registered");
         }
         string newPassword = _authorizer.HashPassword(actor.Name, actor.Password);
         actor.Password = newPassword;
-        _actorService.AddActor(actor);
+        await _actorService.AddActor(actor);
         return Ok("Registration was successful.");
     }
 
@@ -56,7 +54,7 @@ public class AccessController : ControllerBase
         var parts = credentials.Split(":");
         var email = parts[0];
         var encodedPassword = parts[1];
-        var user = _userService.GetUserByEmail(email);
+        var user = await _actorService.GetActorByEmail(email);
         
         if (user == null || user.Role == null)
         {
