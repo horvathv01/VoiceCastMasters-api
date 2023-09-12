@@ -1,12 +1,15 @@
+using VoiceCastMasters_api.Model;
+
 namespace VoiceCastMasters_api.DAL;
 
 public interface IRepository<T>
 {
-    bool Add(T entity);
-    T GetById(long id);
-    bool Update(long id, T entity);
-    bool Delete(long id);
-    IEnumerable<T> GetAll();
+    Task<bool> Add(T entity);
+    Task<T?> GetById(long id);
+    Task<IEnumerable<Actor>?> GetListByIds(List<long> ids);
+    Task<bool> Update(long id, T entity);
+    Task<bool> Delete(long id);
+    Task<IEnumerable<T>> GetAll();
 
-    T? GetByEmail(string email);
+    Task<T?> GetByEmail(string email);
 }

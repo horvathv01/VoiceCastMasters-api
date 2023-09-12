@@ -10,12 +10,12 @@ public class ActorRepository : IRepository<Actor>
     {
         _databaseContext = databaseContext;
     }
-    public bool Add(Actor entity)
+    public async Task<bool> Add(Actor entity)
     {
         try
         {
-            _databaseContext.Actors.Add(entity);
-            _databaseContext.SaveChanges();
+            await _databaseContext.Actors.AddAsync(entity);
+            await _databaseContext.SaveChangesAsync();
             return true;
         }
         catch (Exception e)
@@ -25,25 +25,22 @@ public class ActorRepository : IRepository<Actor>
         }
     }
 
-    public Actor GetById(long id)
+    public async Task<Actor?> GetById(long id)
     {
-        try
-        {
-            Actor entity = _databaseContext.Actors.Find(id);
-            return entity;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        return await _databaseContext.Actors.FindAsync(id);
     }
 
-    public bool Update(long id, Actor entity)
+    public async Task<IEnumerable<Actor>?> GetListByIds(List<long> ids)
+    {
+        return _databaseContext.Actors.Where(t => ids.Contains(t.ID));
+    }
+
+    public async Task<bool> Update(long id, Actor entity)
     {
         try
         {
             _databaseContext.Actors.Update(entity);
+            await _databaseContext.SaveChangesAsync();
             return true;
         }
         catch (Exception e)
@@ -54,12 +51,13 @@ public class ActorRepository : IRepository<Actor>
         
     }
 
-    public bool Delete(long id)
+    public async Task<bool> Delete(long id)
     {
         try
         {
-            Actor entity = _databaseContext.Actors.Find(id);
+            Actor? entity = await _databaseContext.Actors.FindAsync(id);
             _databaseContext.Actors.Remove(entity);
+            await _databaseContext.SaveChangesAsync();
             return true;
         }
         catch (Exception e)
@@ -69,13 +67,13 @@ public class ActorRepository : IRepository<Actor>
         }
     }
 
-    public IEnumerable<Actor> GetAll()
+    public async Task<IEnumerable<Actor>> GetAll()
     {
-        return _databaseContext.Actors.ToList();
+        return await _databaseContext.Actors.ToListAsync();
     }
 
-    public Actor? GetByEmail(string email)
+    public async Task<Actor?> GetByEmail(string email)
     {
-        return _databaseContext.Actors.FirstOrDefault(e => e.Email.Equals(email));
+        return await _databaseContext.Actors.FirstOrDefaultAsync(e => e.Email.Equals(email));
     }
 }
