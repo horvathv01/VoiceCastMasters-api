@@ -23,12 +23,20 @@ public class UserRepository : IRepository<User>
             Console.WriteLine(e);
             return false;
         }
-        
     }
 
     public User GetById(long id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            User entity = _databaseContext.Find<User>(id);
+            return entity;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public bool Update(long id, User entity)
