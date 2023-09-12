@@ -41,7 +41,17 @@ public class UserRepository : IRepository<User>
 
     public bool Update(long id, User entity)
     {
-        throw new NotImplementedException();
+        try
+        {
+            _databaseContext.Update(entity);
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return false;
+        }
+        
     }
 
     public bool Delete(long id)
