@@ -13,14 +13,15 @@ public class Actor : User
         string email, 
         string password, 
         string phone, 
-        string? profilePicture = null
+        
         //Dictionary<Actor, byte>? relations = null, 
-        //List<string>? sampleUrl = null
+        List<string> sampleURL,
+        string? profilePicture = null
         ) :
         base(name, birthDate, email, password, phone, profilePicture)
     {
         Role = Roles.Actor;
         //Relations = relations ?? new Dictionary<Actor, byte>();
-        //SampleURL = sampleUrl ?? new List<string>();
+        SampleURL = sampleURL;
     }
 }

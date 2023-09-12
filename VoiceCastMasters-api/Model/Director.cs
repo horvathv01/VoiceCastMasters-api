@@ -9,19 +9,21 @@ public class Director : Actor
         DateTime birthDate, 
         string email, 
         string password, 
-        string phone, 
-        string? profilePicture = null, 
+        string phone,
+        List<string> sampleUrl,
+        string? profilePicture = null 
         //Dictionary<Actor, byte>? relations = null, 
-        List<string>? sampleUrl = null
+        
         ) : base(
         name, 
         birthDate, 
         email, 
         password, 
         phone, 
+        sampleUrl,
         profilePicture
         //relations, 
-        //sampleUrl
+        
         )
     {
         Role = Roles.Director;
